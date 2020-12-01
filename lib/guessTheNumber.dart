@@ -89,7 +89,7 @@ class MyAppState extends State<MyApp> {
                             elevation: 10,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
+                              children: <Widget>[
                                 const Center(
                                     child: Padding(
                                   child: Text('Try a number!',
@@ -106,7 +106,7 @@ class MyAppState extends State<MyApp> {
                                           controller: numberGuessed,
                                           style: const TextStyle(fontSize: 20, color: Colors.black),
                                           textAlign: TextAlign.center,
-                                          inputFormatters: [
+                                          inputFormatters: <TextInputFormatter>[
                                             FilteringTextInputFormatter.allow(RegExp(r'^[1-9][0-9]?$|^100$'))
                                           ],
                                           keyboardType: TextInputType.number,
@@ -116,8 +116,8 @@ class MyAppState extends State<MyApp> {
                                     child: Padding(
                                         padding: const EdgeInsets.all(10),
                                         child: RaisedButton(
-                                          child:
-                                              Text(pressedOkAlert ? 'RESET' : 'GUESS', style: TextStyle(fontSize: 15)),
+                                          child: Text(pressedOkAlert ? 'RESET' : 'GUESS',
+                                              style: const TextStyle(fontSize: 15)),
                                           color: pressedOkAlert ? Colors.grey : Colors.blue,
                                           onPressed: () {
                                             if (!pressedOkAlert) {
@@ -134,7 +134,7 @@ class MyAppState extends State<MyApp> {
                                                           return AlertDialog(
                                                             title: const Text('You guessed right!'),
                                                             content: Text('It was $toGuess'),
-                                                            actions: [
+                                                            actions: <Widget>[
                                                               FlatButton(
                                                                 child: const Text('Try Again'),
                                                                 onPressed: () {

@@ -1,7 +1,7 @@
 import 'dart:convert' as convert;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 
 void main() {
   runApp(MyApp());
@@ -30,7 +30,7 @@ class MyAppState extends State<MyApp> {
               children: <Widget>[
                 Image.network('https://www.nationsonline.org/gallery/World/currencies.jpg'),
                 Padding(
-                    padding: EdgeInsets.all(20),
+                    padding: const EdgeInsets.all(20),
                     // ignore: prefer_const_constructors
                     child: TextField(
                       controller: valueToConvert,
@@ -41,24 +41,26 @@ class MyAppState extends State<MyApp> {
                         hintText: 'enter the amount of EUR to convert',
                         errorText: validInput == 0 || validInput == 2 ? null : 'Value cannot be empty!',
                       ),
-                      inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^(\d+)?\.?\d*'))],
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.allow(RegExp(r'^(\d+)?\.?\d*'))
+                      ],
                       keyboardType: const TextInputType.numberWithOptions(signed: false, decimal: true),
                     )),
                 RaisedButton(
                   onPressed: () async {
                     validInput = validateText(valueToConvert.text);
                     if (validInput == 2) {
-                      await convertValue(valueToConvert.text);
+                      convertValue(valueToConvert.text);
                     }
                     setState(() {});
                   },
-                  child: Text('CONVERT'),
+                  child: const Text('CONVERT'),
                   color: Colors.blue,
                 ),
                 Visibility(
                     visible: validInput == 2,
                     child: Padding(
-                        padding: EdgeInsets.all(20),
+                        padding: const EdgeInsets.all(20),
                         // ignore: prefer_const_constructors
                         child: Text(
                           '$convertedValue',
@@ -76,10 +78,12 @@ class MyAppState extends State<MyApp> {
       return 2;
   }
 
-  void convertValue(String text) async {
-    const url = 'https://api.exchangeratesapi.io/latest?symbols=RON';
-    var response = await http.get(url);
-    dynamic jsonResponse = convert.jsonDecode(response.body);
+  void convertValue(String text) {
+    const String url = 'https://api.exchangeratesapi.io/latest?symbols=RON';
+    Map<String, dynamic> jsonResponse;
+    get(url).then((Response response) {
+      jsonResponse = convert.jsonDecode(response.body);
+    });
     convertedValue = double.parse(jsonResponse['rates']['RON'].toString()) * double.parse(text);
   }
 }

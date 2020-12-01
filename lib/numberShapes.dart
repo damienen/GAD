@@ -33,7 +33,7 @@ class MyAppState extends State<MyApp> {
                     padding: const EdgeInsets.all(15),
                     child: TextField(
                       keyboardType: TextInputType.number,
-                      inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^[0-9]*$'))],
+                      inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.allow(RegExp(r'^[0-9]*$'))],
                       style: const TextStyle(fontSize: 20, color: Colors.black),
                       textAlign: TextAlign.center,
                       controller: numberInput,
@@ -43,10 +43,14 @@ class MyAppState extends State<MyApp> {
             floatingActionButton: FloatingActionButton.extended(
               onPressed: () {
                 if (numberInput.text.isNotEmpty) {
-                  int nr = int.parse(numberInput.text);
+                  final int nr = int.parse(numberInput.text);
                   String alertText = '';
-                  if (nr.isSquare) alertText += '$nr is a SQUARE';
-                  if (nr.isCube) alertText += '\n$nr is a CUBE';
+                  if (nr.isSquare) {
+                    alertText += '$nr is a SQUARE';
+                  }
+                  if (nr.isCube) {
+                    alertText += '\n$nr is a CUBE';
+                  }
                   showDialog<void>(
                       context: context,
                       builder: (BuildContext context) {
