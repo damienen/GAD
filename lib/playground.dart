@@ -8,21 +8,17 @@ Future<void> main() async {
   final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
   final List<dynamic> movieList = jsonResponse['data']['movies'];
 
-
   //print(result.toString());
 }
 
 class Movie {
-  const Movie({@required this.title,
-    @required this.year,
-    @required this.summary,
-    @required this.genres});
+  const Movie({@required this.title, @required this.year, @required this.summary, @required this.genres});
 
   Movie.fromJson(dynamic item)
-      :title=item['title'],
-        year=item['year'],
-        summary=item['summary'],
-        genres=List<String>.from(item['genres']);
+      : title = item['title'],
+        year = item['year'],
+        summary = item['summary'],
+        genres = List<String>.from(item['genres']);
 
   final String title;
   final int year;

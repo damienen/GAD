@@ -39,10 +39,7 @@ class MyAppState extends State<MyApp> {
                     padding: EdgeInsets.all(15),
                     child: Text(
                       'I\'m thinking of a number between 1 and 100.',
-                      style: TextStyle(
-                          fontSize: 23,
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold),
+                      style: TextStyle(fontSize: 23, color: Colors.black, fontWeight: FontWeight.bold),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -52,10 +49,7 @@ class MyAppState extends State<MyApp> {
                     padding: EdgeInsets.all(15),
                     child: Text(
                       'It\'s your turn to guess my number!',
-                      style: TextStyle(
-                          fontSize: 15,
-                          color: Colors.black,
-                          fontStyle: FontStyle.italic),
+                      style: TextStyle(fontSize: 15, color: Colors.black, fontStyle: FontStyle.italic),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -107,17 +101,13 @@ class MyAppState extends State<MyApp> {
                                 )),
                                 Center(
                                     child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            bottom: 15, left: 5, right: 5),
+                                        padding: const EdgeInsets.only(bottom: 15, left: 5, right: 5),
                                         child: TextField(
                                           controller: numberGuessed,
-                                          style: const TextStyle(
-                                              fontSize: 20,
-                                              color: Colors.black),
+                                          style: const TextStyle(fontSize: 20, color: Colors.black),
                                           textAlign: TextAlign.center,
                                           inputFormatters: [
-                                            FilteringTextInputFormatter.allow(
-                                                RegExp(r'^[1-9][0-9]?$|^100$'))
+                                            FilteringTextInputFormatter.allow(RegExp(r'^[1-9][0-9]?$|^100$'))
                                           ],
                                           keyboardType: TextInputType.number,
                                           enabled: !pressedOkAlert,
@@ -126,73 +116,45 @@ class MyAppState extends State<MyApp> {
                                     child: Padding(
                                         padding: const EdgeInsets.all(10),
                                         child: RaisedButton(
-                                          child: Text(
-                                              pressedOkAlert
-                                                  ? 'RESET'
-                                                  : 'GUESS',
-                                              style: TextStyle(fontSize: 15)),
-                                          color: pressedOkAlert
-                                              ? Colors.grey
-                                              : Colors.blue,
+                                          child:
+                                              Text(pressedOkAlert ? 'RESET' : 'GUESS', style: TextStyle(fontSize: 15)),
+                                          color: pressedOkAlert ? Colors.grey : Colors.blue,
                                           onPressed: () {
                                             if (!pressedOkAlert) {
                                               if (numberGuessed.text.isNotEmpty)
                                                 setState(() {
-                                                  guess = int.parse(
-                                                      numberGuessed.text);
+                                                  guess = int.parse(numberGuessed.text);
                                                   guessed = true;
                                                   if (guess != toGuess) {
                                                     tryHigher = guess < toGuess;
                                                   } else {
                                                     showDialog<void>(
                                                         context: context,
-                                                        builder: (BuildContext
-                                                            context) {
+                                                        builder: (BuildContext context) {
                                                           return AlertDialog(
-                                                            title: const Text(
-                                                                'You guessed right!'),
-                                                            content: Text(
-                                                                'It was $toGuess'),
+                                                            title: const Text('You guessed right!'),
+                                                            content: Text('It was $toGuess'),
                                                             actions: [
                                                               FlatButton(
-                                                                child: const Text(
-                                                                    'Try Again'),
+                                                                child: const Text('Try Again'),
                                                                 onPressed: () {
-                                                                  toGuess = 1 +
-                                                                      rand.nextInt(
-                                                                          100);
+                                                                  toGuess = 1 + rand.nextInt(100);
                                                                   setState(() {
-                                                                    numberGuessed
-                                                                        .clear();
-                                                                    guessed =
-                                                                        false;
-                                                                    guess =
-                                                                        null;
-                                                                    pressedOkAlert =
-                                                                        false;
-                                                                    Navigator.of(
-                                                                            context,
-                                                                            rootNavigator:
-                                                                                true)
-                                                                        .pop();
+                                                                    numberGuessed.clear();
+                                                                    guessed = false;
+                                                                    guess = null;
+                                                                    pressedOkAlert = false;
+                                                                    Navigator.of(context, rootNavigator: true).pop();
                                                                   });
                                                                 },
                                                               ),
                                                               FlatButton(
-                                                                child:
-                                                                    const Text(
-                                                                        'OK'),
+                                                                child: const Text('OK'),
                                                                 onPressed: () {
-                                                                  pressedOkAlert =
-                                                                      true;
+                                                                  pressedOkAlert = true;
                                                                   setState(() {
-                                                                    guessed =
-                                                                        false;
-                                                                    Navigator.of(
-                                                                            context,
-                                                                            rootNavigator:
-                                                                                true)
-                                                                        .pop();
+                                                                    guessed = false;
+                                                                    Navigator.of(context, rootNavigator: true).pop();
                                                                   });
                                                                 },
                                                               ),
