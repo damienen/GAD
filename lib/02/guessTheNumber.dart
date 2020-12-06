@@ -92,13 +92,13 @@ class MyAppState extends State<MyApp> {
                     children: <Widget>[
                       const Center(
                           child: Padding(
-                            child: Text('Try a number!',
-                                style: TextStyle(
-                                  fontSize: 30,
-                                  color: Colors.grey,
-                                )),
-                            padding: EdgeInsets.all(5),
-                          )),
+                        child: Text('Try a number!',
+                            style: TextStyle(
+                              fontSize: 30,
+                              color: Colors.grey,
+                            )),
+                        padding: EdgeInsets.all(5),
+                      )),
                       Center(
                           child: Padding(
                               padding: const EdgeInsets.only(bottom: 15, left: 5, right: 5),
@@ -116,8 +116,7 @@ class MyAppState extends State<MyApp> {
                           child: Padding(
                               padding: const EdgeInsets.all(10),
                               child: RaisedButton(
-                                child: Text(pressedOkAlert ? 'RESET' : 'GUESS',
-                                    style: const TextStyle(fontSize: 15)),
+                                child: Text(pressedOkAlert ? 'RESET' : 'GUESS', style: const TextStyle(fontSize: 15)),
                                 color: pressedOkAlert ? Colors.grey : Colors.blue,
                                 onPressed: () {
                                   if (!pressedOkAlert) {
@@ -175,8 +174,13 @@ class MyAppState extends State<MyApp> {
                                 },
                               )))
                     ],
-                  ),),),),
+                  ),
+                ),
+              ),
+            ),
           ],
-        ),),);
+        ),
+      ),
+    );
   }
 }

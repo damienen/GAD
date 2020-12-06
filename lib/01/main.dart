@@ -28,8 +28,7 @@ class MyAppState extends State<MyApp> {
             appBar: AppBar(title: const Text('Currency converter')),
             body: Column(
               children: <Widget>[
-                Image.network(
-                    'https://www.nationsonline.org/gallery/World/currencies.jpg'),
+                Image.network('https://www.nationsonline.org/gallery/World/currencies.jpg'),
                 Padding(
                     padding: const EdgeInsets.all(20),
                     // ignore: prefer_const_constructors
@@ -40,16 +39,12 @@ class MyAppState extends State<MyApp> {
                       // ignore: prefer_const_constructors
                       decoration: InputDecoration(
                         hintText: 'enter the amount of EUR to convert',
-                        errorText: validInput == 0 || validInput == 2
-                            ? null
-                            : 'Value cannot be empty!',
+                        errorText: validInput == 0 || validInput == 2 ? null : 'Value cannot be empty!',
                       ),
                       inputFormatters: <TextInputFormatter>[
-                        FilteringTextInputFormatter.allow(
-                            RegExp(r'^(\d+)?\.?\d*'))
+                        FilteringTextInputFormatter.allow(RegExp(r'^(\d+)?\.?\d*'))
                       ],
-                      keyboardType: const TextInputType.numberWithOptions(
-                          signed: false, decimal: true),
+                      keyboardType: const TextInputType.numberWithOptions(signed: false, decimal: true),
                     )),
                 RaisedButton(
                   onPressed: () async {
@@ -70,8 +65,7 @@ class MyAppState extends State<MyApp> {
                         child: Text(
                           '$convertedValue',
                           textAlign: TextAlign.center,
-                          style: const TextStyle(
-                              fontSize: 50, color: Colors.black54),
+                          style: const TextStyle(fontSize: 50, color: Colors.black54),
                         )))
               ],
             )));
@@ -90,7 +84,6 @@ class MyAppState extends State<MyApp> {
     get(url).then((Response response) {
       jsonResponse = convert.jsonDecode(response.body);
     });
-    convertedValue = double.parse(jsonResponse['rates']['RON'].toString()) *
-        double.parse(text);
+    convertedValue = double.parse(jsonResponse['rates']['RON'].toString()) * double.parse(text);
   }
 }
