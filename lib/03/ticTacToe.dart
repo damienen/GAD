@@ -39,7 +39,8 @@ class MyAppState extends State<MyApp> {
                   onPressed: () {
                     setState(() {
                       if (gameState[index] == Colors.white) {
-                        gameState[index] = greenTurn ? Colors.green : Colors.red;
+                        gameState[index] =
+                            greenTurn ? Colors.green : Colors.red;
                         greenTurn = !greenTurn;
                       }
                       isGameOver();
@@ -98,7 +99,9 @@ List<Color> gameState = <Color>[
 //This method checks whether the game is finished and if it is it signals the winning move
 bool isGameOver() {
   //Checking each row
-  if (gameState[0] == gameState[1] && gameState[1] == gameState[2] && gameState[2] != Colors.white) {
+  if (gameState[0] == gameState[1] &&
+      gameState[1] == gameState[2] &&
+      gameState[2] != Colors.white) {
     for (int i = 0; i < gameState.length; i++) {
       if (i != 0 && i != 1 && i != 2) {
         gameState[i] = Colors.white;
@@ -106,7 +109,9 @@ bool isGameOver() {
     }
     return true;
   }
-  if (gameState[3] == gameState[4] && gameState[4] == gameState[5] && gameState[5] != Colors.white) {
+  if (gameState[3] == gameState[4] &&
+      gameState[4] == gameState[5] &&
+      gameState[5] != Colors.white) {
     for (int i = 0; i < gameState.length; i++) {
       if (i != 3 && i != 4 && i != 5) {
         gameState[i] = Colors.white;
@@ -114,7 +119,9 @@ bool isGameOver() {
     }
     return true;
   }
-  if (gameState[6] == gameState[7] && gameState[7] == gameState[8] && gameState[8] != Colors.white) {
+  if (gameState[6] == gameState[7] &&
+      gameState[7] == gameState[8] &&
+      gameState[8] != Colors.white) {
     for (int i = 0; i < gameState.length; i++) {
       if (i != 6 && i != 7 && i != 8) {
         gameState[i] = Colors.white;
@@ -123,7 +130,9 @@ bool isGameOver() {
     return true;
   }
   //Checking each column
-  if (gameState[0] == gameState[3] && gameState[3] == gameState[6] && gameState[6] != Colors.white) {
+  if (gameState[0] == gameState[3] &&
+      gameState[3] == gameState[6] &&
+      gameState[6] != Colors.white) {
     for (int i = 0; i < gameState.length; i++) {
       if (i != 0 && i != 3 && i != 6) {
         gameState[i] = Colors.white;
@@ -131,7 +140,9 @@ bool isGameOver() {
     }
     return true;
   }
-  if (gameState[1] == gameState[4] && gameState[4] == gameState[7] && gameState[7] != Colors.white) {
+  if (gameState[1] == gameState[4] &&
+      gameState[4] == gameState[7] &&
+      gameState[7] != Colors.white) {
     for (int i = 0; i < gameState.length; i++) {
       if (i != 1 && i != 4 && i != 7) {
         gameState[i] = Colors.white;
@@ -139,7 +150,9 @@ bool isGameOver() {
     }
     return true;
   }
-  if (gameState[2] == gameState[5] && gameState[5] == gameState[8] && gameState[8] != Colors.white) {
+  if (gameState[2] == gameState[5] &&
+      gameState[5] == gameState[8] &&
+      gameState[8] != Colors.white) {
     for (int i = 0; i < gameState.length; i++) {
       if (i != 2 && i != 5 && i != 8) {
         gameState[i] = Colors.white;
@@ -148,7 +161,9 @@ bool isGameOver() {
     return true;
   }
   //Checking diagonals
-  if (gameState[0] == gameState[4] && gameState[4] == gameState[8] && gameState[8] != Colors.white) {
+  if (gameState[0] == gameState[4] &&
+      gameState[4] == gameState[8] &&
+      gameState[8] != Colors.white) {
     for (int i = 0; i < gameState.length; i++) {
       if (i != 0 && i != 4 && i != 8) {
         gameState[i] = Colors.white;
@@ -156,12 +171,18 @@ bool isGameOver() {
     }
     return true;
   }
-  if (gameState[3] == gameState[4] && gameState[4] == gameState[6] && gameState[6] != Colors.white) {
+  if (gameState[3] == gameState[4] &&
+      gameState[4] == gameState[6] &&
+      gameState[6] != Colors.white) {
     for (int i = 0; i < gameState.length; i++) {
       if (i != 3 && i != 4 && i != 6) {
         gameState[i] = Colors.white;
       }
     }
+    return true;
+  }
+
+  if (!gameState.contains(Colors.white)) {
     return true;
   }
   return false;
