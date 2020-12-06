@@ -156,7 +156,7 @@ bool isGameOver() {
     }
     return true;
   }
-  if (gameState[3] == gameState[4] && gameState[4] == gameState[6] && gameState[6] != Colors.white) {
+  if (gameState[2] == gameState[4] && gameState[4] == gameState[6] && gameState[6] != Colors.white) {
     for (int i = 0; i < gameState.length; i++) {
       if (i != 3 && i != 4 && i != 6) {
         gameState[i] = Colors.white;
