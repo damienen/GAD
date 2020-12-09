@@ -1,14 +1,15 @@
-//import 'dart:convert';
-//import 'package:http/http.dart';
+/*
+import 'dart:convert';
+import 'package:http/http.dart';
 import 'package:meta/meta.dart';
 
 Future<void> main() async {
-  //const String url = 'https://yts.mx/api/v2/list_movies.json';
-  //final Response response = await get(url);
-  //final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
-  //final List<dynamic> movieList = jsonResponse['data']['movies'];
-
-  //print(result.toString());
+  const String url = 'https://www.worldometers.info/geography/flags-of-the-world/';
+  final Response response = await get(url);
+  final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+  final List<dynamic> movieList = jsonResponse['data']['movies'];
+  final Movie dd=Movie.fromJson(jsonResponse['data']['movies'][2]);
+  print(dd.toString());
 }
 
 class Movie {
@@ -29,18 +30,26 @@ class Movie {
   String toString() {
     return 'Movie{title: $title, year: $year, summary: $summary, genres: $genres}';
   }
-}
-
-/*
-void main() async {
+}*/
+/*void main() async {
   const url='https://yts.mx/api/v2/list_movies.json';
   get(url).then((Response response){
     Map<String, dynamic> map = jsonDecode(response.body);
-    print(map['status']);
+    print(map['data']['movies']);
   });
-
 }
 */
-/*for (int i = 0; i < movieList.length; i++) {
-    print(movieList[i]['title']);
-  }*/
+
+/*Future<void> main() {
+  get('https://www.worldometers.info/geography/flags-of-the-world/').then((Response response) {
+    final String data = response.body;
+    final List<String> items = data.split('<a href="/img/flags');
+    for (final String item in items.skip(1)) {
+      const String countryTitlePattern = 'padding-top:10px">';
+      final String countryName =
+      item.substring(item.indexOf(countryTitlePattern) + countryTitlePattern.length, item.indexOf('</div>'));
+      final String flagUrl = 'https//worldometers.info/img/flags${item.split('"')[0]}';
+      print(flagUrl);
+    }
+  });
+}*/
