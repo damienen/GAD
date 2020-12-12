@@ -18,13 +18,18 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
+  String movieUrl = 'https://yts.mx/api/v2/list_movies.json';
+  Map<String, String> parameters = <String, String>{'order_by': 'desc', 'quality': 'All', 'page': '2'};
   List<dynamic> movieList = <dynamic>[];
   int movieNumber = 20;
   TextEditingController searchBar = TextEditingController();
+  bool orderDescending = true;
+  bool hqOn = false;
+  int page = 1;
 
   @override
   void initState() {
-    _getMovies();
+    _getMovies(movieUrl);
     super.initState();
   }
 
@@ -38,24 +43,67 @@ class _MyAppState extends State<MyApp> {
             actions: <Widget>[
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 24, top: 4, right: 4, bottom: 4),
+                  padding: const EdgeInsets.only(left: 24, top: 4, right: 24, bottom: 4),
                   child: TextField(
                     style: const TextStyle(fontSize: 20),
                     controller: searchBar,
                     keyboardType: TextInputType.text,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       hintText: 'Search',
+                      suffixIcon: IconButton(
+                        icon: const Icon(
+                          Icons.clear,
+                          color: Colors.white,
+                        ),
+                        onPressed: () => searchBar.clear(),
+                      ),
                     ),
+                    onSubmitted: (String value) {
+                      setState(() {
+                        if (searchBar.text.isNotEmpty) {
+                          parameters.update('query_term', (String value) => value, ifAbsent: () {
+                            return value;
+                          });
+                        } else {
+                          parameters.remove('query_term');
+                        }
+                      });
+                    },
                   ),
                 ),
               ),
               IconButton(
                 icon: const Icon(Icons.search),
                 onPressed: () {
+                  setState(() {
+                    if (searchBar.text.isNotEmpty) {
+                      parameters.update('query_term', (String value) => searchBar.text, ifAbsent: () {
+                        return searchBar.text;
+                      });
+                    } else {
+                      parameters.remove('query_term');
+                    }
+                    _getMovies(createUrl(movieUrl, parameters));
+                  });
+                },
+              ),
+              IconButton(
+                icon: hqOn ? const Icon(Icons.high_quality_outlined) : const Icon(Icons.high_quality),
+                onPressed: () {
+                  hqOn = !hqOn;
+                  parameters.update('quality', (String value) => hqOn ? '2160p' : 'All');
+                  _getMovies(createUrl(movieUrl, parameters));
                   setState(() {});
                 },
               ),
-              IconButton(icon: const Icon(Icons.filter_list), onPressed: () {}),
+              IconButton(
+                  icon: orderDescending ? const Icon(Icons.arrow_downward) : const Icon(Icons.arrow_upward),
+                  onPressed: () {
+                    orderDescending = !orderDescending;
+                    parameters.update('quality', (String value) => orderDescending ? 'desc' : 'asc');
+                    _getMovies(createUrl(movieUrl, parameters));
+                    setState(() {});
+                  }),
             ],
           ),
           body: ListView(
@@ -63,11 +111,23 @@ class _MyAppState extends State<MyApp> {
               ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 padding: const EdgeInsets.all(8),
-                itemCount: movieNumber,
+                itemCount: movieNumber + 1,
                 itemBuilder: (BuildContext context, int index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: Center(
+                  if (index == movieNumber) {
+                    return Container(
+                      color: Colors.greenAccent,
+                      child: FlatButton(
+                        child: const Text('Load More'),
+                        onPressed: () {
+                          parameters.update('page', (String value) => (int.parse(parameters['page']) + 1).toString());
+                          _getMovies(createUrl(movieUrl, parameters), reset: false);
+                          setState(() {});
+                        },
+                      ),
+                    );
+                  } else {
+                    return Padding(
+                      padding: const EdgeInsets.all(4.0),
                       child: SizedBox(
                         height: 200,
                         child: Card(
@@ -115,8 +175,8 @@ class _MyAppState extends State<MyApp> {
                           ),
                         ),
                       ),
-                    ),
-                  );
+                    );
+                  }
                 },
                 shrinkWrap: true,
               )
@@ -125,12 +185,35 @@ class _MyAppState extends State<MyApp> {
         ));
   }
 
-  Future<void> _getMovies() async {
-    const String url = 'https://yts.mx/api/v2/list_movies.json';
+  Future<void> _getMovies(String url, {bool reset = true}) async {
     final Response response = await get(url);
     final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
-    movieList = jsonResponse['data']['movies'];
-    setState(() {});
+    if (reset) {
+      movieList = jsonResponse['data']['movies'];
+      page = 1;
+    } else {
+      movieList += jsonResponse['data']['movies'];
+    }
+    setState(() {
+      if (movieList != null)
+        movieNumber = movieList.length;
+      else
+        movieNumber = 0;
+    });
+  }
+
+  String createUrl(String baseUrl, Map<String, String> parameters) {
+    String formedUrl = baseUrl;
+    if (parameters.isEmpty)
+      return baseUrl;
+    else {
+      formedUrl += '?';
+      formedUrl += parameters.keys.elementAt(0) + '=' + parameters.values.elementAt(0);
+      for (int i = 1; i < parameters.length; i++) {
+        formedUrl += '&' + parameters.keys.elementAt(i) + '=' + parameters.values.elementAt(i);
+      }
+    }
+    return formedUrl;
   }
 }
 
