@@ -19,13 +19,12 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   String movieUrl = 'https://yts.mx/api/v2/list_movies.json';
-  Map<String, String> parameters = <String, String>{'order_by': 'desc', 'quality': 'All', 'page': '2'};
+  Map<String, String> parameters = <String, String>{'order_by': 'desc', 'quality': 'All', 'page': '1'};
   List<dynamic> movieList = <dynamic>[];
   int movieNumber = 20;
   TextEditingController searchBar = TextEditingController();
   bool orderDescending = true;
   bool hqOn = false;
-  int page = 1;
 
   @override
   void initState() {
@@ -75,6 +74,7 @@ class _MyAppState extends State<MyApp> {
               IconButton(
                 icon: const Icon(Icons.search),
                 onPressed: () {
+                  parameters.update('page', (String value) => 1.toString());
                   setState(() {
                     if (searchBar.text.isNotEmpty) {
                       parameters.update('query_term', (String value) => searchBar.text, ifAbsent: () {
@@ -83,7 +83,8 @@ class _MyAppState extends State<MyApp> {
                     } else {
                       parameters.remove('query_term');
                     }
-                    _getMovies(createUrl(movieUrl, parameters));
+
+                    _getMovies(createUrl(movieUrl, parameters), reset: true);
                   });
                 },
               ),
@@ -92,7 +93,8 @@ class _MyAppState extends State<MyApp> {
                 onPressed: () {
                   hqOn = !hqOn;
                   parameters.update('quality', (String value) => hqOn ? '2160p' : 'All');
-                  _getMovies(createUrl(movieUrl, parameters));
+                  parameters.update('page', (String value) => 1.toString());
+                  _getMovies(createUrl(movieUrl, parameters), reset: true);
                   setState(() {});
                 },
               ),
@@ -100,8 +102,9 @@ class _MyAppState extends State<MyApp> {
                   icon: orderDescending ? const Icon(Icons.arrow_downward) : const Icon(Icons.arrow_upward),
                   onPressed: () {
                     orderDescending = !orderDescending;
-                    parameters.update('quality', (String value) => orderDescending ? 'desc' : 'asc');
-                    _getMovies(createUrl(movieUrl, parameters));
+                    parameters.update('order_by', (String value) => orderDescending ? 'desc' : 'asc');
+                    parameters.update('page', (String value) => 1.toString());
+                    _getMovies(createUrl(movieUrl, parameters), reset: true);
                     setState(() {});
                   }),
             ],
@@ -190,9 +193,10 @@ class _MyAppState extends State<MyApp> {
     final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
     if (reset) {
       movieList = jsonResponse['data']['movies'];
-      page = 1;
     } else {
-      movieList += jsonResponse['data']['movies'];
+      if (jsonResponse['data']['movies'] != null) {
+        movieList.addAll(jsonResponse['data']['movies']);
+      }
     }
     setState(() {
       if (movieList != null)
@@ -213,6 +217,7 @@ class _MyAppState extends State<MyApp> {
         formedUrl += '&' + parameters.keys.elementAt(i) + '=' + parameters.values.elementAt(i);
       }
     }
+    print(formedUrl);
     return formedUrl;
   }
 }
