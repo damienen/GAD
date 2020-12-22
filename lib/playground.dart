@@ -31,14 +31,21 @@ class Movie {
     return 'Movie{title: $title, year: $year, summary: $summary, genres: $genres}';
   }
 }*/
-/*void main() async {
-  const url='https://yts.mx/api/v2/list_movies.json';
-  get(url).then((Response response){
-    Map<String, dynamic> map = jsonDecode(response.body);
-    print(map['data']['movies']);
-  });
+
+import 'dart:io';
+
+void main() {
+  for (int i = 1; i <= 100; i++) {
+    stdout.write('$i:');
+    if (i % 3 == 0) {
+      stdout.write('Fizz');
+    }
+    if (i % 5 == 0) {
+      stdout.write('Buzz');
+    }
+    stdout.write('\n');
+  }
 }
-*/
 
 /*Future<void> main() {
   get('https://www.worldometers.info/geography/flags-of-the-world/').then((Response response) {
